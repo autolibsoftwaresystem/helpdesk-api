@@ -1,0 +1,231 @@
+<div class="">
+    <div class="container-fluid">
+        <div class="row m-3">
+            <div class="col">
+                <div class="card p-3 gradientBlue instDetailCard">
+
+                    <p class="row">
+                        <span class=" p-2 pl-5 pr-2 text-white float-left font-size-14 sideTitle">
+                            <span title="{{instContactDetails.emailId}}">Welcome
+                                {{instContactDetails.firstName}} {{instContactDetails.lastName}} &nbsp;&nbsp;</span>
+                        </span>
+                    </p>
+
+                    <p class="text-center text-white font-weight-light h3"> {{Institute.instituteName}}</p>
+                    <p class="text-center text-white font-weight-light">
+                        {{Institute.street1}},
+                        {{Institute.street2}},
+                        {{Institute.city}},
+                        {{Institute.state}},
+                        {{Institute.country}} - {{Institute.zipcode}}
+                    </p>
+                    <p class="text-center">
+                        <span class="badge badge-light p-2 pr-3 pl-3 m-1 border-rounded gradientWhite font-size-16">
+                            Phone : {{Institute.phone}}
+                            <i class="fas fa-phone">&nbsp;</i></span>
+                        <span class="badge badge-light p-2 pr-3 pl-3 m-1 border-rounded gradientWhite  font-size-16">
+                            Alt. Phone : {{Institute.alternatePhone}}
+                            <i class="fas fa-phone">&nbsp;</i></span>
+                        <span class="badge badge-light p-2 pr-3 pl-3 m-1 border-rounded gradientWhite font-size-16">
+                            Email Id : {{Institute.emailId}}
+                            <i class="far fa-envelope-open">&nbsp;</i></span>
+                        <span class="badge badge-light p-2 pr-3 pl-3 m-1 border-rounded gradientWhite font-size-16">
+                            Alt. Email Id : {{Institute.alternateEmailId}}
+                            <i class="far fa-envelope-open">&nbsp;</i></span>
+                        <span class="badge badge-light p-2 pr-3 pl-3 m-1 border-rounded gradientWhite font-size-16">
+                            GST No : {{Institute.gstno}}</span>
+                    </p>
+
+
+                    <div class="edit-container">
+                        <div class="middle">
+                            <a class="btn btn-sm text-dark instEditButton" routerLink="/onboard/institute-details">Edit
+                                <i class="far fa-edit">&nbsp;</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <hr class="m-1 p-0">
+    <div class="row">
+        <div class="col-lg col-md-6 col-sm-12">
+            <a routerLink="/ticket">
+                <div class="card pr-4 border-primary text-info">
+                    <i class="fa fa-ticket fa-5x" aria-hidden="true"></i>
+                    <h2 class="card-title">{{tickets.length}}</h2>
+                    <p class="card-subtitle text-muted">TOTAL TICKETS</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg col-md-6 col-sm-12">
+            <a routerLink="/ticket">
+                <div class="card pr-4 border-primary text-success">
+                    <i class="fa fa-check-square-o fa-5x" aria-hidden="true"></i>
+                    <h2 class="card-title">{{TicketStatus.Closed}}</h2>
+                    <p class="card-subtitle text-muted">CLOSED TICKETS</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg col-md-6 col-sm-12">
+            <a routerLink="/ticket">
+                <div class="card border-primary text-danger">
+                    <i class="fa fa-exclamation-triangle fa-5x" aria-hidden="true"></i>
+                    <h2 class="card-title">{{tickets.length - TicketStatus.Closed}}</h2>
+                    <p class="card-subtitle text-muted">PENDING TICKETS</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg col-md-6 col-sm-12">
+            <div class="card border-primary text-dark">
+                <i class="fa fa-cubes fa-5x" aria-hidden="true"></i>
+                <h2 class="card-title">{{instituteProducts.length}}</h2>
+                <p class="card-subtitle text-muted">SERVICES</p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <h4 class="pl-0 ml-0">
+        <span class=" p-2 pl-5 pr-2 text-white font-size-14 sideTitle">
+            <i class="fa fa-cubes">&nbsp;</i>Your Services&nbsp;&nbsp;&nbsp;
+        </span>
+    </h4>
+
+
+    <div class="row" [hidden]="instituteProducts.length > 0">
+        <div class="col text-center">
+            <span class="badge badge-primary p-3 pr-5 pl-5 border-rounded gradientBlue font-size-16"> No Service Found
+                <i class="fa fa-cubes">&nbsp;</i></span>
+        </div>
+    </div>
+    <div class="pl-5 pr-5">
+        <div id="accordion">
+            <div class="card p-0 m-1" *ngFor="let ip of instituteProducts">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion"
+                            href="{{'#service-detail-'+ip.product.id}}" aria-expanded=" false">
+
+                            <span class="float-left text-dark small">
+                                {{ip.product.name}}
+                            </span>
+                            <span class="text-muted float-right">
+                                <small class="pr-2"> AMC expiry at {{ip.amcExpiryDate | date:'mediumDate'}}</small>
+                                <span *ngIf="ip.currentServiceUnder == 'AMC' || ip.currentServiceUnder == 'Warranty'"
+                                    class="badge badge-info mr-2">{{ip.currentServiceUnder}}</span>
+                                <span *ngIf="ip.currentServiceUnder != 'AMC' && ip.currentServiceUnder != 'Warranty'"
+                                    class="badge badge-info mr-2">{{ip.currentServiceUnder}}</span>
+                            </span>
+                        </a>
+                    </h5>
+                </div>
+
+                <div id="{{'service-detail-'+ip.product.id}}" class="collapse" aria-labelledby="headingOne"
+                    data-parent="#accordion">
+                    <div class="card-body">
+                        <p class="text-muted" [innerHTML]="ip.product.description"></p>
+                        <p class="text-muted float-left">
+                            <span class="badge badge-info mr-2">Last AMC Paid at
+                                {{ip.lastAMCPaidDate | date:'mediumDate'}}</span>
+                            <span class="badge badge-info mr-2">AMC Expiry at
+                                {{ip.amcExpiryDate | date:'mediumDate'}}</span>
+                            <span class="badge badge-info mr-2">AMC Amount Paid
+                                {{ip.amcAmount | currency:'INR'}} </span>
+                            <span class="badge badge-info mr-2">Currently under
+                                {{ip.currentServiceUnder}} </span>
+                            <span class="badge badge-info mr-2">since
+                                {{ip.createddatetime | date:'mediumDate'}}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h4 class="pl-0 ml-0 mt-3">
+        <span class=" p-2 pl-5 pr-2 text-white font-size-14 sideTitle">
+            <i class="fa fa-ticket">&nbsp;</i>Recent Tickets&nbsp;&nbsp;&nbsp;
+        </span>
+    </h4>
+
+    <div class="row" [hidden]="tickets.length > 0">
+        <div class="col text-center">
+            <span class="badge badge-primary p-3 pr-5 pl-5 border-rounded gradientBlue font-size-16"> No Tickets Found
+                <i class="fa fa-ticket">&nbsp;</i></span>
+        </div>
+    </div>
+
+    <div class="row mb-5 pb-5  pl-5 pr-5">
+        <div class="col scrollableTicketsDiv">
+            <div id="ticket_accordion" class="mb-5">
+                <div class="card p-0 m-1" *ngFor="let ticket of tickets">
+                    <div class="card-header" id="ticket_headingOne">
+                        <h5 class="mb-0">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion"
+                                href="{{'#ticket-detail-'+ticket.ticketId}}" aria-expanded=" false">
+                                <span class="float-left text-dark small text-nowrap-2">
+                                    #{{ticket.ticketId}} -
+                                    <span class="text-primary" [innerHTML]="ticket.subject | base64HTML"></span>
+                                </span>
+                                <span class="text-muted float-right">
+                                    <span class="badge badge-success mr-2"
+                                        *ngIf="ticket.status == 'Closed'">{{ticket.status}}</span>
+                                    <span class="badge badge-warning mr-2"
+                                        *ngIf="ticket.status == 'Hold'">{{ticket.status}}</span>
+                                    <span class="badge badge-primary mr-2"
+                                        *ngIf="ticket.status == 'Assigned'">{{ticket.status}}</span>
+                                    <span class="badge badge-info mr-2"
+                                        *ngIf="ticket.status != 'Closed' && ticket.status != 'Hold' && ticket.status != 'Assigned'">{{ticket.status}}</span>
+                                    <small class="pr-2">last updated at
+                                        {{ticket.lastupdatedatetime | date:'mediumDate'}}</small>
+                                    <small class="badge badge-primary  badge-pill">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </small>
+                                </span>
+                            </a>
+                        </h5>
+                    </div>
+
+                    <div id="{{'ticket-detail-'+ticket.ticketId}}" class="collapse" aria-labelledby="ticket_headingOne"
+                        data-parent="#ticket_accordion">
+                        <div class="card-body">
+                            <p class="text-muted float-left" [innerHTML]="ticket.summary | base64HTML"></p>
+                            <br>
+                            <p class="text-muted float-left">
+                                <span class="badge badge-info mr-2"
+                                    *ngIf="ticket.assignedTo != '' && ticket.assignedTo != null">Assigned To :
+                                    {{ticket.assignedTo}}</span>
+                                <span class="badge badge-info mr-2" *ngIf="ticket.emailUpdates != ''">Updates to :
+                                    {{ticket.emailUpdates}}</span>
+                                <span class="badge badge-info mr-2">Raised by : {{ticket.emailId}}</span>
+                                <span class="badge badge-info mr-2">Priority : {{ticket.priority}} </span>
+                                <span class="badge badge-info mr-2"
+                                    *ngIf="ticket.product != null && ticket.product != ''"> {{ticket.product}} </span>
+                                <span class="badge badge-info mr-2"> {{ticket.serviceType}}</span>
+                                <span class="badge badge-info mr-2">{{ticket.serviceUnder}}</span>
+
+                            </p>
+                            <a class="btn btn-primary btn-sm float-right" href="/ticket/view-ticket/{{ticket.ticketId}}"
+                                target="_blank"> View Ticket <i class="fas fa-external-link-alt"></i> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+<div title="Open Chat" class="fixed-bottom float-right pointer" routerLink="/chatpage">
+    <img style="position:absolute;bottom:15px;right:15px;margin:0;"
+        src="/assets/icons/message-icon.png" class="js-tilt" height="60px" width="60px">
+</div>
+
+<div title="Open New Ticket" class="fixed-bottom float-right pointer" routerLink="/ticket/add-ticket">
+    <img style="position:absolute;bottom:15px;right:85px;margin:0;"
+        src="https://vectorified.com/images/support-ticket-icon-24.png" class="js-tilt" height="60px" width="60px">
+</div>
