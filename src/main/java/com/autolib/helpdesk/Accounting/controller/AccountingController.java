@@ -262,7 +262,7 @@ public class AccountingController {
 	@PostMapping("save-letterpad")
 	public ResponseEntity<?> saveLetterPad(@RequestHeader(value = "Authorization")String token , @RequestBody LetterPad letterpad) {
 
-		logger.info("save-letterpad starts:::");
+		logger.info("save-letterpad starts:::"+letterpad);
 		jwtUtil.isValidToken(token);
 		Map<String, Object> resp = new HashMap<>();
 
@@ -326,15 +326,15 @@ public class AccountingController {
 		return new ResponseEntity<>(resp, HttpStatus.OK);
 	}
 	
-	@GetMapping("get-all-letterpad")
-	public ResponseEntity<?> getAllLetterPad(@RequestHeader(value = "Authorization")String token) {
+	@PostMapping("get-all-letterpad")
+	public ResponseEntity<?> getAllLetterPad(@RequestHeader(value = "Authorization")String token,@RequestBody LetterpadRequest req) {
 
-		logger.info("get-all-letterpad:::");
+		logger.info("get-all-letterpad:::"+req);
 		jwtUtil.isValidToken(token);
 		Map<String, Object> resp = new HashMap<>();
 
 		try {
-			resp = acntService.getAllLetterPad();
+			resp = acntService.getAllLetterPad(req);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
